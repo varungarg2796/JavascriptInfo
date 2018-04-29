@@ -132,6 +132,9 @@ console.log(varun.calculateAge()); */
 
 //////FUNCTION CONSTRUCTOR?????????///////////////////
 
+////////////----->>>> .prototype enables inheritance
+
+/*
 var person = function(name,age,city){
 	this.name = name;
 	this.age = age;
@@ -153,3 +156,304 @@ console.log(fonda.lastName);
 varun.fakeAge();
 console.log(varun);
 
+*/
+
+
+
+////////////Object.create///////////////
+
+
+
+
+//Primitives vs Objects
+
+//Primitives - number,string,boolean,null
+
+/*
+//Primitives
+var a = 1;
+var b = a;
+a = 2;
+console.log(a); //2
+console.log(b); //1 
+
+//objects
+
+var obj1 = {
+	name: 'abc',
+	age: 20
+}
+
+var obj2 = obj1;
+obj1.age = 30;
+
+consol.log(obj1.age); // 20
+consol.log(obj2.age); // 20 (As it is a reference and not primitive.)
+
+//Functions
+
+
+var age=111;
+var obj = {
+	name: 'varun',
+	city: 'Delhi'
+}
+
+function change (a , b){
+	a = 30;
+	b.city = 'lahore'
+}
+
+change (age, obj);
+
+console.log(age); //111 (As it is a primitve)
+console.log(obj.city); // Lahore (As it is a reference)
+
+*/
+
+
+
+//***** callbackFunction(a, calculateAge); (where calculateAge is a function which will be exectuted later. Hence, Callback that is, it will be called later)
+//***** executerightnowFunction (a, calculateAge()); (CalculateAge function will get executed then and there)
+
+
+
+
+
+//////////Passing functions like variables -- (First class functions, callbacks) ////////
+
+/*
+
+var years = [ 1990, 2002, 1920, 1996, 1983];
+
+function arrayCalc(arr, fn){  //fn is a function here being passed as a parameter
+	var arrResult = [];
+	for( var i=0; i<arr.length; i++){
+		arrResult.push(fn(arr[i]))
+	}
+	return arrResult;
+}
+
+function CalculateAge(el){
+	return 2018 - el;
+}
+
+function isFullage(el){
+	return el >= 18;
+}
+
+function maxHeartrate(el){
+	if(el >=18 && el < 80){
+		return Math.round(206.9 - (0.67 * el));
+	}
+	else{
+		return -1;
+	}
+}
+
+
+var ages = arrayCalc (years, CalculateAge); //CalculateAge is a callback being executed later on by arrayCalc
+
+var fullAges = arrayCalc (ages, isFullage); //isFullage (similate as above)
+
+var heartRate = arrayCalc (ages, maxHeartrate);
+console.log(ages);
+console.log(fullAges);
+console.log(heartRate);
+
+//HENCE arrayCalc is being reused again and again. Also, it has a function as a parameter
+
+*/
+
+
+
+
+//////////////First class functions (Returning functions as functions) /////
+/*
+function cricketTeam (position) {
+	if(position === 'opener'){
+		return function (name){
+			console.log(name+ " will be opening the batting");
+		}
+	}
+	else if(position === 'bowler'){
+		return function (name){
+			console.log ("Our opening bowler will be " + name);
+		}
+	}
+	else{
+		return function (name){
+			console.log("Sorry " + name + ", you are not in the team");		}
+	}
+}
+
+var forOpener = cricketTeam('opener'); //forOpener is now a function
+var forBowler = cricketTeam('bowler'); //forBowler is now a function
+forOpener('Varun');
+//cricketTeam('opener')('varun'); // we are executing this function twice. first with opener. then together with opener and varun
+forBowler('Ankit');
+//cricketTeam('bowler')('ankit');
+cricketTeam('not in team')('varun');
+*/
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+///////////IIFE (immediately invoked functions) ///////////////
+
+
+//IIFE IS USED FOR DATA PRIVACY
+//We fool the parser by surrounding the function with () so that it thinks that it is an expression and not a statement
+//IIFE is not used when we have to write reusable code. Just for data protection.
+
+(function(){
+	var score = Math.random() * 10;
+	console.log(score >= 5);
+})(); // () here invokes the function.
+//console.log(score); // This will show error as it cannot be accessed. Hence it is secure.
+
+
+//another example of execution
+(function(goodLuck){
+	var score = Math.random() * 10;
+	console.log(score >= 5- goodLuck); //this will always be true. (because of the goodluck)
+})(5);
+
+
+*/
+
+
+
+
+
+
+
+
+
+
+///////////************MOST IMPORTANT**************////////////////
+/////////// CLOSURES ///////////////////////////////////
+
+//Closures- An inner function always has access to the variables and parameters of 
+//          the outer function, even after the function has returned.
+
+//It produces cleaner code. 
+//Modifying the cricket example above.
+
+
+
+/*
+function cricketTeam(position){
+	return function(name){
+		if (position === 'opener'){
+			console.log("You will open our batting, "+ name);
+		}
+		else if(position === 'bowler'){
+			console.log( name + "you need to take lots of wickets today"); 
+		}
+		else{
+			console.log("Sorry, "+ name + ",you are not playing")
+		}
+	}
+}
+
+cricketTeam('opener')('varun');
+
+
+//Main example for closures
+
+function retirement(retirementAge){
+	var a = "years left for retirement";
+	return function(yearOfBirth){
+		var age = 2018 - yearOfBirth;
+		console.log((retirementAge - age) + a); //here, 'a' and 'retirementAge' can be accessed event after the function retirement has been returned. This is because it is in the outer function.
+	}
+}
+
+var retirementIndia = retirement(60);
+retirementIndia(1996);
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+/////BIND CALL AND APPLY///////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///Quiz - coding activity
+
+//TO MAKE THE CODE PRIVATE so that it can be used as a plugin,
+//we are using IIFE
+
+(function(){ //IIFE starts 
+	var questions = function(question, options,  correctOption){ //question constructor
+			this.question = question;
+			this.options = options;
+			this.correctOption = correctOption;
+	}
+
+	var question1 = new questions ('Who is the coolest person?', ['Me' , 'Also me'], 0);
+	var question2 = new questions ('Who is DK?', ['KKR' , 'DD'], 0);
+	var arr = [question1,question2]; //storing the formed questions in the array
+	var rand = Math.floor(Math.random() * 2); //to choose a random question from array (0 or 1)
+
+
+	questions.prototype.displayQuestion = function(){ //inherited all the object keys because of prototype
+		console.log(this.question); //displays the question
+		for(var i=0; i<arr.length;i++){ //shows the option
+			console.log(i + ':' + this.options[i])
+		}
+	}
+
+	questions.prototype.checkAnswer = function(ans){
+		if (ans === this.correctOption){ //check whether chosen answer is correct or not
+			console.log("Correct"); 
+		}
+		else{
+			console.log('incorrect!');
+		}
+	}
+
+	//below should be in order so that the question is displayed before the prompt.
+	arr[rand].displayQuestion(); 
+	var answer = parseInt(prompt('Please select the correct answer')); //as prompt takes answer in string.
+	arr[rand].checkAnswer(answer);
+
+
+})(); //IIFE ends
+
+
+//Because of IIFE, no one will be able to access any variable through the console.
