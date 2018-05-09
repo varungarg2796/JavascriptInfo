@@ -412,13 +412,13 @@ retirementIndia(1996);
 
 
 
-
+/*
 ///Quiz - coding activity
 
 //TO MAKE THE CODE PRIVATE so that it can be used as a plugin,
 //we are using IIFE
 
-(function(){ //IIFE starts 
+//(function(){ //IIFE starts 
 	var questions = function(question, options,  correctOption){ //question constructor
 			this.question = question;
 			this.options = options;
@@ -428,7 +428,6 @@ retirementIndia(1996);
 	var question1 = new questions ('Who is the coolest person?', ['Me' , 'Also me'], 0);
 	var question2 = new questions ('Who is DK?', ['KKR' , 'DD'], 0);
 	var arr = [question1,question2]; //storing the formed questions in the array
-	var rand = Math.floor(Math.random() * 2); //to choose a random question from array (0 or 1)
 
 
 	questions.prototype.displayQuestion = function(){ //inherited all the object keys because of prototype
@@ -438,22 +437,55 @@ retirementIndia(1996);
 		}
 	}
 
-	questions.prototype.checkAnswer = function(ans){
+	questions.prototype.checkAnswer = function(ans,callback){  //callback here is the score (keepScore) function
+		var sc;
 		if (ans === this.correctOption){ //check whether chosen answer is correct or not
 			console.log("Correct"); 
+			sc = callback(true); //this refers to the keepScore which refers to the score function.
+			console.log(sc);		
 		}
 		else{
 			console.log('incorrect!');
+			sc = callback(false);	
+		}
+		this.displayScore(sc);
+	}
+
+	questions.prototype.displayScore = function(s){
+		console.log('Your current score is ' + s);
+		console.log('------------------------');
+	}
+
+	function score(){
+		var sc = 0;
+		return function(correct){ //this increases the score if true
+			if(correct){
+				sc++;
+			}
+			return sc; //MISTAKE. return score. This was returning the whole method as a string. STUPID.
 		}
 	}
 
-	//below should be in order so that the question is displayed before the prompt.
-	arr[rand].displayQuestion(); 
-	var answer = parseInt(prompt('Please select the correct answer')); //as prompt takes answer in string.
-	arr[rand].checkAnswer(answer);
+	var keepScore = score(); //to call the score function  //keepScore can access sc.
+	nextQuestion();
+
+	function nextQuestion(){
+
+		var rand = Math.floor(Math.random() * 2); //to choose a random question from array (0 or 1)
+		//below should be in order so that the question is displayed before the prompt.
+		arr[rand].displayQuestion(); 
+		var answer = prompt('Please select the correct answer'); //as prompt takes answer in string.
+		if(answer !== 'exit'){
+		//console.log(answer);
+			arr[rand].checkAnswer(parseInt(answer), keepScore); //passed the score function to checkAnswer.
+			nextQuestion();			
+		}
+	}
 
 
-})(); //IIFE ends
+//})(); //IIFE ends
 
 
 //Because of IIFE, no one will be able to access any variable through the console.
+
+*/
